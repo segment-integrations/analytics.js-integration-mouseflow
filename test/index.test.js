@@ -71,22 +71,12 @@ describe('Mouseflow', function() {
 
     describe('#page', function() {
       beforeEach(function() {
-        analytics.stub(window.mouseflow, 'newPageView');
+        analytics.stub(window._mfq, 'push');
       });
 
-      it('should call mouseflow.newPageView', function() {
-        analytics.page();
-        analytics.called(window.mouseflow.newPageView);
-      });
-
-      it('should not throw if its not a function', function() {
-        window.mouseflow.newPageView = null;
-        analytics.page();
-      });
-
-      it('should not throw if window.mouseflow is not an object', function() {
-        window.mouseflow = null;
-        analytics.page();
+      it('should pass the path', function() {
+        analytics.page({ path: '/path' });
+        analytics.called(window._mfq.push, ['newPageView', '/path']);
       });
     });
 
